@@ -4,9 +4,9 @@ import requests
 url = 'https://cohengarden.herokuapp.com/api/add'
 
 reading = {
-   "baro_pressure": 0.0,
-   "baro_temp": 0.0,
-   "cpu_temp": 0.0,
+   "baro_pressure": 10.0,
+   "baro_temp": 20.0,
+   "cpu_temp": 30.0,
    "humid_humid": 0.0,
    "humid_temp": 0.0,
    "light": 0,
