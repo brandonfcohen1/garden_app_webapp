@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 import os
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -10,11 +11,19 @@ db = SQLAlchemy(app)
 
 from models import Reading
 
+@app.route("/", methods = ['GET'])
+def home_page():
+    last_rec = Reading.query.order_by(Reading.id.desc()).first()
+    last_rec = last_rec.serialize()
+    df = pd.DataFrame(last_rec, index = [last_rec['id']]).drop(columns = 'id').to_html()
+    return render_template('home.html', last_result = df)
+
 
 @app.route("/getall", methods = ['GET'])
 def get_all():
     readings=Reading.query.all()
     return jsonify([r.serialize() for r in readings])
+
 
 @app.route("/last/<int:limrecs>", methods = ['GET'])
 def get_last_record(limrecs):
