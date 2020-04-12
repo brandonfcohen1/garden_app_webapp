@@ -14,6 +14,10 @@ from models import Reading
 def hello():
     return "Hello World!"
 
+@app.route("/hello")
+def hello():
+    return "Hello"
+
 
 @app.route("/api/add", methods = ['POST'])
 def add_record():
