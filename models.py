@@ -10,8 +10,9 @@ class Reading(db.Model):
     humid_humid = db.Column(db.Float)
     light = db.Column(db.Integer)
     time = db.Column(db.Float)
+    soil_moisture = db.Column(db.Float)
 
-    def __init__(self, baro_temp, baro_pressure, cpu_temp, humid_temp, humid_humid, light, time):
+    def __init__(self, baro_temp, baro_pressure, cpu_temp, humid_temp, humid_humid, light, time, soil_moisture):
         self.baro_temp = baro_temp
         self.baro_pressure = baro_pressure
         self.cpu_temp = cpu_temp
@@ -19,6 +20,7 @@ class Reading(db.Model):
         self.humid_humid = humid_humid
         self.light = light
         self.time = time
+        self.soil_moisture = soil_moisture
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
@@ -33,4 +35,5 @@ class Reading(db.Model):
             'humid_humid': self.humid_humid,
             'light':self.light,
             'time': self.time,
+            'soil_moisture': self.soil_moisture,
         })
