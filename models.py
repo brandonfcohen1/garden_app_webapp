@@ -22,3 +22,15 @@ class Reading(db.Model):
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
+
+    def serialize(self):
+        return({
+            'id': self.id,
+            'baro_temp': self.baro_temp,
+            'baro_pressure': self.baro_pressure,
+            'cpu_temp': self.cpu_temp,
+            'humid_temp': self.humid_temp,
+            'humid_humid': self.humid_humid,
+            'light':self.light,
+            'time': self.time,
+        })

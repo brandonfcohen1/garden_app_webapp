@@ -10,10 +10,16 @@ db = SQLAlchemy(app)
 
 from models import Reading
 
-@app.route("/")
-def hello():
-    return "Hello World!"
 
+@app.route("/getall", methods = ['GET'])
+def get_all():
+    readings=Reading.query.all()
+    return jsonify([r.serialize() for r in readings])
+
+@app.route("/last/<int:limrecs>", methods = ['GET'])
+def get_last_record(limrecs):
+    last_n=Reading.query.order_by(Reading.id.desc()).limit(limrecs)
+    return jsonify([r.serialize() for r in last_n])
 
 
 @app.route("/api/add", methods = ['POST'])
