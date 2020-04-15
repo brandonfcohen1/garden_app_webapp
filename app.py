@@ -41,7 +41,8 @@ def add_record():
         humid_temp = content["humid_temp"],
         humid_humid = content["humid_humid"],
         light = content["light"],
-        time = content["light"]
+        time = content["time"],
+        soil_moisture = content["soil_moisture"]
     )
     db.session.add(reading)
     db.session.commit()

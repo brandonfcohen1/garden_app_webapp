@@ -1,7 +1,7 @@
 import requests
 
-#url = 'http://127.0.0.1:5000/api/add'
-url = 'https://cohengarden.herokuapp.com/api/add'
+url = 'http://127.0.0.1:5000/api/add'
+#url = 'https://cohengarden.herokuapp.com/api/add'
 
 reading = {
    "baro_pressure": 10.0,
@@ -11,7 +11,8 @@ reading = {
    "humid_temp": 0.0,
    "light": 0,
    "reading_id": 0,
-   "time": 0.0
+   "time": 0.0,
+   "soil_moisture":0,
  }
 
 print(requests.post(url, json = reading).text)
