@@ -18,16 +18,16 @@ def home_page():
     last_rec = last_rec.serialize()
     df = pd.DataFrame(last_rec, index = [last_rec['id']]).drop(columns = 'id').to_html()
 
-    last360 = Reading.query.order_by(Reading.id.desc()).limit(360).all()
-    read_df = []
-    for read in last360:
-        read_df.append(read)
-    read_df = pd.DataFrame(read_df)
-    read_df = read_df[read_df['time']>0]
-    fig = plt.plot(read_df['time'], read_df['baro_temp'])
-    mpld3.fig_to_html(fig)
+    # last360 = Reading.query.order_by(Reading.id.desc()).limit(360).all()
+    # read_df = []
+    # for read in last360:
+    #     read_df.append(read)
+    # read_df = pd.DataFrame(read_df)
+    # read_df = read_df[read_df['time']>0]
+    # fig = plt.plot(read_df['time'], read_df['baro_temp'])
+    # mpld3.fig_to_html(fig)
 
-    return render_template('home.html', last_result = df, graph = mpld3.fig_to_html(fig))
+    return render_template('home.html', last_result = df) #, graph = mpld3.fig_to_html(fig))
 
 
 @app.route("/getall", methods = ['GET'])
