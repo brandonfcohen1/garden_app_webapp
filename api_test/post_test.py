@@ -1,7 +1,7 @@
 import requests
 
-url = 'http://127.0.0.1:5000/api/add'
-#url = 'https://cohengarden.herokuapp.com/api/add'
+#url = 'http://127.0.0.1:5000/api/add'
+url = 'https://cohengarden.herokuapp.com/api/add'
 
 reading = {
    "baro_pressure": 10.0,
