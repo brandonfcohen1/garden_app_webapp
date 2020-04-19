@@ -24,6 +24,7 @@ def dashboard(n_readings = 72):
     for read in last360:
         json = read.serialize()
         json.update({'datetime': datetime.fromtimestamp(json['time']).replace(tzinfo = pytz.timezone('UTC')).astimezone(pytz.timezone('US/Eastern'))})
+        print('test')
         read_df.append(json)
     read_df = pd.DataFrame(read_df)
     read_df = read_df[read_df['time']>0]
