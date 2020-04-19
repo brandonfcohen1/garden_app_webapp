@@ -5,3 +5,4 @@ notes.txt
 latest.dump*
 .DS*
 migrations/
+api_test/
