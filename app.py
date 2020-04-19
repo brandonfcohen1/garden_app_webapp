@@ -14,16 +14,8 @@ db = SQLAlchemy(app)
 
 from models import Reading
 
+
 @app.route("/", methods = ['GET'])
-def home_page():
-    last_rec = Reading.query.order_by(Reading.id.desc()).first()
-    last_rec = last_rec.serialize()
-    df = pd.DataFrame(last_rec, index = [last_rec['id']]).drop(columns = 'id').to_html()
-
-    return render_template('home.html', last_result = df)
-
-
-@app.route("/dashboard", methods = ['GET'])
 def dashboard(n_readings = 72):
     # Get last 6 hours of readings, dump to dataframe
     last360 = Reading.query.order_by(Reading.time.desc()).limit(n_readings).all()
@@ -36,7 +28,8 @@ def dashboard(n_readings = 72):
     read_df = read_df[read_df['time']>0]
 
     # Create figure, add subplots
-    fig = plt.figure(figsize=(14,8))
+    fig = plt.figure(figsize=(14,8.5))
+    plt.subplots_adjust(hspace = 0.4)
 
     fig.add_subplot(331)
     plt.plot(read_df['datetime'], read_df['baro_temp'])
@@ -81,7 +74,16 @@ def dashboard(n_readings = 72):
     plt.title('Pump Status')
 
     #Export to HTML
-    return str(mpld3.fig_to_html(fig))
+    return render_template('home.html', dashboard = str(mpld3.fig_to_html(fig)))
+
+
+@app.route("/latest", methods = ['GET'])
+def home_page():
+    last_rec = Reading.query.order_by(Reading.id.desc()).first()
+    last_rec = last_rec.serialize()
+    df = pd.DataFrame(last_rec, index = [last_rec['id']]).drop(columns = 'id').to_html()
+
+    return render_template('latest.html', last_result = df)
 
 
 @app.route("/getall", methods = ['GET'])
