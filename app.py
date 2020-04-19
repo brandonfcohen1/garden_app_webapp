@@ -2,7 +2,9 @@ from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 import os
 import pandas as pd
-import matplotlib.pyplot as plt, mpld3
+import matplotlib.pyplot as plt
+import mpld3
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -18,16 +20,68 @@ def home_page():
     last_rec = last_rec.serialize()
     df = pd.DataFrame(last_rec, index = [last_rec['id']]).drop(columns = 'id').to_html()
 
-    # last360 = Reading.query.order_by(Reading.id.desc()).limit(360).all()
-    # read_df = []
-    # for read in last360:
-    #     read_df.append(read)
-    # read_df = pd.DataFrame(read_df)
-    # read_df = read_df[read_df['time']>0]
-    # fig = plt.plot(read_df['time'], read_df['baro_temp'])
-    # mpld3.fig_to_html(fig)
+    return render_template('home.html', last_result = df)
 
-    return render_template('home.html', last_result = df) #, graph = mpld3.fig_to_html(fig))
+
+@app.route("/dashboard", methods = ['GET'])
+def dashboard(n_readings = 72):
+    # Get last 6 hours of readings, dump to dataframe
+    last360 = Reading.query.order_by(Reading.time.desc()).limit(n_readings).all()
+    read_df = []
+    for read in last360:
+        json = read.serialize()
+        json.update({'datetime': datetime.fromtimestamp(json['time'])})
+        read_df.append(json)
+    read_df = pd.DataFrame(read_df)
+    read_df = read_df[read_df['time']>0]
+
+    # Create figure, add subplots
+    fig = plt.figure(figsize=(14,8))
+
+    fig.add_subplot(331)
+    plt.plot(read_df['datetime'], read_df['baro_temp'])
+    plt.title('Temperature (from baro sensor)')
+    plt.ylabel('deg F')
+
+    fig.add_subplot(332)
+    plt.plot(read_df['datetime'], read_df['humid_temp'])
+    plt.title('Temperature (from humidity sensor)')
+    plt.ylabel('deg F')
+
+    fig.add_subplot(333)
+    plt.plot(read_df['datetime'], read_df['cpu_temp'])
+    plt.title('CPU Temperature')
+    plt.ylabel('deg F')
+
+    fig.add_subplot(334)
+    plt.plot(read_df['datetime'], read_df['baro_pressure'])
+    plt.title('Barometric Pressure')
+    plt.ylabel('mmHg')
+
+    fig.add_subplot(335)
+    plt.plot(read_df['datetime'], read_df['humid_humid'])
+    plt.title('Humidity')
+    plt.ylabel('%')
+
+    fig.add_subplot(336)
+    plt.plot(read_df['datetime'], 1-read_df['light'])
+    plt.title('Light')
+    plt.ylabel('Light on?')
+
+    fig.add_subplot(337)
+    plt.plot(read_df['datetime'], read_df['soil_moisture'])
+    plt.title('Soil Moisture')
+
+    fig.add_subplot(338)
+    plt.plot(read_df['datetime'], read_df['water_level'])
+    plt.title('Water Level')
+
+    fig.add_subplot(339)
+    plt.plot(read_df['datetime'], read_df['pump_status'])
+    plt.title('Pump Status')
+
+    #Export to HTML
+    return str(mpld3.fig_to_html(fig))
 
 
 @app.route("/getall", methods = ['GET'])
