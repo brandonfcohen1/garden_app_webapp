@@ -4,4 +4,4 @@ __pycache__/
 notes.txt
 latest.dump*
 .DS*
-migrations
+migrations/
