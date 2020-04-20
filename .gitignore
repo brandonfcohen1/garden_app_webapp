@@ -6,3 +6,4 @@ latest.dump*
 .DS*
 migrations/
 api_test/
+secret_key.py

@@ -1,11 +1,13 @@
 import os
+from secret_key import secret_key
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     DEBUG = False
     TESTING = False
     CSRF_ENABLED = True
-    SECRET_KEY = 'this-really-needs-to-be-changed'
+    SECRET_KEY = secret_key
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
 
