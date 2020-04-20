@@ -22,10 +22,10 @@ from models import Reading
 @app.route("/", methods = ['GET'])
 @app.route("/<int:n_readings>", methods = ['GET'])
 def dashboard(n_readings = 72):
-    # Get last 6 hours of readings, dump to dataframe
-    last360 = Reading.query.order_by(Reading.time.desc()).limit(n_readings).all()
+    # Get last n_readings, dump to dataframe
+    lastn = Reading.query.order_by(Reading.time.desc()).limit(n_readings).all()
     read_df = []
-    for read in last360:
+    for read in lastn:
         json = read.serialize()
         #localtime = datetime.fromtimestamp(json['time']).replace(tzinfo = pytz.timezone('UTC')).astimezone(pytz.timezone('US/Eastern'))
         # ^ Viewing the dates in Eastern time working locally but not on Heroku. Will troubleshoot this but in the meantime I'll take a lazy approach by just moving the time
