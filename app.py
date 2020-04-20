@@ -18,8 +18,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 from models import Reading
 
-#Define views
+# Index view, which calls last n_readings (72 if blank) and produces charts
 @app.route("/", methods = ['GET'])
+@app.route("/<int:n_readings>", methods = ['GET'])
 def dashboard(n_readings = 72):
     # Get last 6 hours of readings, dump to dataframe
     last360 = Reading.query.order_by(Reading.time.desc()).limit(n_readings).all()
@@ -83,6 +84,7 @@ def dashboard(n_readings = 72):
     return render_template('home.html', dashboard = str(mpld3.fig_to_html(fig)))
 
 
+#Get latest route and return basic html table
 @app.route("/latest", methods = ['GET'])
 def home_page():
     last_rec = Reading.query.order_by(Reading.id.desc()).first()
@@ -92,18 +94,21 @@ def home_page():
     return render_template('latest.html', last_result = df)
 
 
+#Return json of all db readings
 @app.route("/getall", methods = ['GET'])
 def get_all():
     readings=Reading.query.all()
     return jsonify([r.serialize() for r in readings])
 
 
+#Return json of last limrecs readings
 @app.route("/last/<int:limrecs>", methods = ['GET'])
 def get_last_record(limrecs):
     last_n=Reading.query.order_by(Reading.id.desc()).limit(limrecs)
     return jsonify([r.serialize() for r in last_n])
 
 
+#Endpoint to add records
 @app.route("/api/add", methods = ['POST'])
 def add_record():
     content = request.json
