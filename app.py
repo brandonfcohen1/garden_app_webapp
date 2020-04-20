@@ -26,7 +26,9 @@ def dashboard(n_readings = 72):
     read_df = []
     for read in last360:
         json = read.serialize()
-        localtime = datetime.fromtimestamp(json['time']).replace(tzinfo = pytz.timezone('UTC')).astimezone(pytz.timezone('US/Eastern'))
+        #localtime = datetime.fromtimestamp(json['time']).replace(tzinfo = pytz.timezone('UTC')).astimezone(pytz.timezone('US/Eastern'))
+        # ^ Viewing the dates in Eastern time working locally but not on Heroku. Will troubleshoot this but in the meantime I'll take a lazy approach by just moving the time
+        localtime = datetime.fromtimestamp(json['time']  - 4*60*60)
         json.update({'datetime': localtime})
         read_df.append(json)
     read_df = pd.DataFrame(read_df)
@@ -63,8 +65,7 @@ def dashboard(n_readings = 72):
 
     fig.add_subplot(336)
     plt.plot(read_df['datetime'], 1-read_df['light'])
-    plt.title('Light')
-    plt.ylabel('Light on?')
+    plt.title('Light On?')
 
     fig.add_subplot(337)
     plt.plot(read_df['datetime'], read_df['soil_moisture'])
