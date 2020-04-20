@@ -6,16 +6,19 @@ import matplotlib.pyplot as plt
 import mpld3
 from datetime import datetime
 import pytz
+import numpy as np
 
+#Create app and set configs
 app = Flask(__name__)
 
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+#Import models
 from models import Reading
 
-
+#Define views
 @app.route("/", methods = ['GET'])
 def dashboard(n_readings = 72):
     # Get last 6 hours of readings, dump to dataframe
@@ -23,8 +26,8 @@ def dashboard(n_readings = 72):
     read_df = []
     for read in last360:
         json = read.serialize()
-        json.update({'datetime': datetime.fromtimestamp(json['time']).replace(tzinfo = pytz.timezone('UTC')).astimezone(pytz.timezone('US/Eastern'))})
-        print('test')
+        localtime = datetime.fromtimestamp(json['time']).replace(tzinfo = pytz.timezone('UTC')).astimezone(pytz.timezone('US/Eastern'))
+        json.update({'datetime': localtime})
         read_df.append(json)
     read_df = pd.DataFrame(read_df)
     read_df = read_df[read_df['time']>0]
@@ -39,7 +42,7 @@ def dashboard(n_readings = 72):
     plt.ylabel('deg F')
 
     fig.add_subplot(332)
-    plt.plot(read_df['datetime'], read_df['humid_temp'])
+    plt.plot(read_df['datetime'], read_df['humid_temp'].replace(32.0, np.NaN).interpolate())
     plt.title('Temperature (from humidity sensor)')
     plt.ylabel('deg F')
 
@@ -54,7 +57,7 @@ def dashboard(n_readings = 72):
     plt.ylabel('mmHg')
 
     fig.add_subplot(335)
-    plt.plot(read_df['datetime'], read_df['humid_humid'])
+    plt.plot(read_df['datetime'], read_df['humid_humid'].replace(0.0, np.NaN).interpolate())
     plt.title('Humidity')
     plt.ylabel('%')
 
@@ -103,18 +106,25 @@ def get_last_record(limrecs):
 @app.route("/api/add", methods = ['POST'])
 def add_record():
     content = request.json
-    reading=Reading(
-        baro_temp = content["baro_temp"],
-        baro_pressure = content["baro_pressure"],
-        cpu_temp = content["cpu_temp"],
-        humid_temp = content["humid_temp"],
-        humid_humid = content["humid_humid"],
-        light = content["light"],
-        time = content["time"],
-        soil_moisture = content["soil_moisture"],
-        water_level = content["water_level"],
-        pump_status = content["pump_status"]
-    )
-    db.session.add(reading)
-    db.session.commit()
-    return "Record Added {}".format(reading.id)
+
+    # check for duplicate timestamp
+    same_times = Reading.query.filter_by(time = content["time"]).first()
+    if same_times is None:
+        reading=Reading(
+            baro_temp = content["baro_temp"],
+            baro_pressure = content["baro_pressure"],
+            cpu_temp = content["cpu_temp"],
+            humid_temp = content["humid_temp"],
+            humid_humid = content["humid_humid"],
+            light = content["light"],
+            time = content["time"],
+            soil_moisture = content["soil_moisture"],
+            water_level = content["water_level"],
+            pump_status = content["pump_status"]
+        )
+        db.session.add(reading)
+        db.session.commit()
+        return "Record Added {}".format(reading.id)
+
+    else:
+        return('duplicate timestamp')
