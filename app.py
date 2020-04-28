@@ -18,6 +18,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 from models import Reading
 
+
+#Project Description Viewing
+@app.route("/project", methods = ['GET'])
+def project():
+    return render_template('project.html')
+
+
 # Index view, which calls last n_readings (72 if blank) and produces charts
 @app.route("/", methods = ['GET'])
 @app.route("/<int:n_readings>", methods = ['GET'])
