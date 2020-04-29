@@ -45,7 +45,7 @@
     <main role="main" class="container">
       <h1 class="mt-5">Project Description</h1>
       <br>
-      <img src = 'static/images/overall_view_no_cover.png' width="550">
+      <img src = 'static/images/overall_view_no_cover.png' class="img-fluid" width="550">
       <br>
       <br>
       <p class="lead">During quarantine, I bought a <a href = "https://www.raspberrypi.org/products/raspberry-pi-4-model-b/" target="_blank"> Raspberry Pi</a> and <a href = "https://www.amazon.com/gp/product/B07TLRYGT1/ref=ppx_yo_dt_b_asin_title_o04_s01?ie=UTF8&psc=1" target="_blank"> some </a> <a href = "https://www.amazon.com/gp/product/B01J9GD3DG/ref=ppx_yo_dt_b_asin_title_o02_s00?ie=UTF8&psc=1" target="_blank"> sensors </a> from Amazon to learn about IoT programming. After some tinkering, I thought an interesting project to learn would be to build a self-watering garden. Then, I bought some <a href = "https://www.amazon.com/gp/product/B06ZY8JGJ4/ref=ppx_yo_dt_b_asin_title_o04_s00?ie=UTF8&psc=1" target="_blank"> seeds </a> in an attempt to make this useful for more than my own learning to try to actually grow some herbs.</p>
@@ -58,19 +58,19 @@
       <br>
       <h1 class="mt-5">System Layout</h1>
       <p class="lead"> I'd like to make a better circuit diagram at some point, but this should do for now:</p>
-      <img src = 'static/images/layout_with_tags.png'>
+      <img src = 'static/images/layout_with_tags.png' class="img-fluid">
       <p class="lead"> Some more views:</p>
       <br>
       <div class="row">
             <div class="text-center col-md-6">
                   <figure class="figure">
-                    <img src = 'static/images/rpio_sensors.png' height="375">
+                    <img src = 'static/images/rpio_sensors.png' height="375" class="img-fluid">
                     <figcaption class="figure-caption">Closeup of environment sensors</figcaption>
                   </figure>
             </div>
             <div class="text-center col-md-6">
                   <figure class="figure">
-                    <img src = 'static/images/rpi_close_up.png' height="375">
+                    <img src = 'static/images/rpi_close_up.png' height="375" class="img-fluid">
                     <figcaption class="figure-caption">Closeup of Raspberry Pi</figcaption>
                   </figure>
             </div>
@@ -91,11 +91,11 @@
       </div>
       <br>
       <h1 class="mt-5">How it Works</h1>
-      <p class="lead">I wrote a python script which runs on the Pi, and takes readings from all sensors every 5 minutes (the timing can be changed, obviously). After taking a reading, if the reading is above a certain threshold (indicating dry soil), the pump will turn on for 1 second. I determined this threshold experimentally through trial and error, and I expect to need to modify it over time. I am also very worried about over-watering, so I only allow the pump to run once in a 24 hour period using the automated script. If I press the Touch Sensor the pump will run for 0.5 seconds. Once the readings have been collected and pump run if necessary, the script will post the web app's API to store the data in Postgres in the cloud.</p>
+      <p class="lead">I wrote a python script which runs on the Pi, and takes readings from all sensors every 5 minutes (the timing can be changed, obviously). After taking a reading, if the reading is above a certain threshold (indicating dry soil), the pump will turn on for 1 second. I determined this threshold experimentally through trial and error, and I expect to need to modify it over time. I am also very worried about over-watering, so I only allow the pump to run once in a 24 hour period using the automated script. If I press the Touch Sensor the pump will run for 0.5 seconds. Once the readings have been collected and pump run if necessary, the script will post to the web app's API to store the data in Postgres in the cloud.</p>
       <p class="lead">The full details can be found <a href="https://github.com/brandonfcohen1/garden_app" target="_blank">here</a> on GitHub.</p>
       <p class="lead">The web app is really simple. There is an endpoint at which the Raspberry Pi can post the latest readings, and some logic to render a set of latest readings in a pretty simple array of charts using matplotlib and mpld3. The code for the web app can be found <a href="https://github.com/brandonfcohen1/garden_app_webapp">here</a> on GitHub.</p>
       <p class="lead">From the dashboard, we can see some really interesting things in the data:</p>
-      <img src = 'static/images/graph_markup.png'>
+      <img src = 'static/images/graph_markup.png' class="img-fluid">
       <p class="lead">Since this is an mpld3 rendering, you can use the home/zoom/pan icons at the bottom left of the screen to explore the data in more detail.</p>
 
       <br>
