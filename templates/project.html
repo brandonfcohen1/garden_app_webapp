@@ -30,11 +30,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Dashboard</a>
+          </li>
             <li class="nav-item active">
               <a class="nav-link" href="#">Project <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Dashboard</a>
             </li>
           </ul>
         </div>
@@ -45,12 +45,57 @@
     <main role="main" class="container">
       <h1 class="mt-5">Project Description</h1>
       <br>
-      <img src = '../images/overall_view_no_cover.png' width="550">
+      <img src = 'static/images/overall_view_no_cover.png' width="550">
       <br>
       <br>
       <p class="lead">During quarantine, I bought a <a href = "https://www.raspberrypi.org/products/raspberry-pi-4-model-b/"> Raspberry Pi</a> and <a href = "https://www.amazon.com/gp/product/B07TLRYGT1/ref=ppx_yo_dt_b_asin_title_o04_s01?ie=UTF8&psc=1"> some </a> <a href = https://www.amazon.com/gp/product/B01J9GD3DG/ref=ppx_yo_dt_b_asin_title_o02_s00?ie=UTF8&psc=1> sensors </a> from Amazon to learn about IoT programming. After some tinkering, I thought an interesting project to learn would be to build a self-watering garden. Then, I bought some <a href = "https://www.amazon.com/gp/product/B06ZY8JGJ4/ref=ppx_yo_dt_b_asin_title_o04_s00?ie=UTF8&psc=1"> seeds </a> in an attempt to make this useful for more than my own learning to try to actually grow some herbs.</p>
       <p class="lead">Obviously, what I've done here is not the easiest, cheapest, or most effective way to grow herbs! It is way over-engineered for the purpose of learning about building systems with the pi.</p>
-      <p class="lead">Also during quarantine, I wanted to beef up my web development skills, so built an API to which the pi can post the sensor readings, and a front-end which will render some cool graphics. Since I built the rest of the project in Python and it is my preferred programming language, I chose <a href="https://flask.palletsprojects.com/en/1.1.x/"> Flask </a> to build the web app. I hosted the app on <a href = "https://www.heroku.com/"> Heroku </a>, since it is so simple to use and has a free "hobby" tier and used <a href = "https://www.postgresql.org/"> PostgreSQL</a> for the database which will store the readings.
+      <p class="lead">Also during quarantine, I wanted to beef up my web development skills, so built an API to which the pi can post the sensor readings, and a front-end which will render some cool graphics. Since I built the rest of the project in Python and it is my preferred programming language, I chose <a href="https://flask.palletsprojects.com/en/1.1.x/"> Flask </a> to build the web app. Flask is incredibly intuitive and simple to work with. I hosted the app on <a href = "https://www.heroku.com/"> Heroku </a>, since it is so simple to use and has a free "hobby" tier and used <a href = "https://www.postgresql.org/"> PostgreSQL</a> for the database which will store the readings.
+      <p class="lead">The code for the app which manages the garden can be found <a href="https://github.com/brandonfcohen1/garden_app">here</a> on github.
+
+
+      <br>
+      <h1 class="mt-5">System Layout</h1>
+      <p class="lead"> I'd like to make a better circuit diagram at some point, but this should do for now:</p>
+      <img src = 'static/images/layout_with_tags.png'>
+      <p class="lead"> Some more views:</p>
+      <br>
+      <div class="row">
+            <div class="text-center col-md-6">
+                  <figure class="figure">
+                    <img src = 'static/images/rpio_sensors.png' height="375">
+                    <figcaption class="figure-caption">Closeup of environment sensors</figcaption>
+                  </figure>
+            </div>
+            <div class="text-center col-md-6">
+                  <figure class="figure">
+                    <img src = 'static/images/rpi_close_up.png' height="375">
+                    <figcaption class="figure-caption">Closeup of Raspberry Pi</figcaption>
+                  </figure>
+            </div>
+      </div>
+      <div class="row">
+            <div class="text-center col-md-6">
+                  <figure class="figure">
+                    <img src = 'static/images/water.png' height="375">
+                    <figcaption class="figure-caption">Closeup of water level sensor and water pump</figcaption>
+                  </figure>
+            </div>
+            <div class="text-center col-md-6">
+                  <figure class="figure">
+                    <img src = 'static/images/soil.png' height="375">
+                    <figcaption class="figure-caption">Closeup of soil moisture sensor</figcaption>
+                  </figure>
+            </div>
+      </div>
+      <br>
+      <h1 class="mt-5">How it Works</h1>
+      <p class="lead">I wrote a python script which runs on the Pi, and takes readings from all sensors every 5 minutes (the timing can be changed, obviously). After taking a reading, if the reading is above a certain threshold (indicating dry soil), the pump will turn on for 1 second. I determined this threshold experimentally through trial and error, and I expect to need to modify it over time. I am also very worried about over-watering, so I only allow the pump to run once in a 24 hour period using the automated script. If I press the Touch Sensor the pump will run for 0.5 seconds. Once the readings have been collected and pump run if necessary, the script will post the web app's API to store the data in Postgres in the cloud.</p>
+      <p class="lead">The full details can be found on <a href="https://github.com/brandonfcohen1/garden_app">GitHub</a>.</p>
+      <p class="lead">
+
+
+
     </main>
 
 
