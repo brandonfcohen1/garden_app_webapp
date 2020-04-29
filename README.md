@@ -6,7 +6,7 @@ The repo for the app which manages the garden can be found <a href="https://gith
 
 The dashboard for the web app can be found <a href="http://cohengarden.herokuapp.com/">here</a>.
 
-Obviously, what I've done here is not the easiest, cheapest, or most effective way to grow herbs! It is way over-engineered for the purpose of learning about building systems with the pi.
+Obviously what I've done here is not the easiest, cheapest, or most effective way to grow herbs. I really just built it to use any and all sensors I could connect to the Raspberry Pi. I don't even know if the herbs will grow well here, but it was a fun project (and I've got some seedlings coming in)!
 
 I also wanted to work on my web development skills, so I built an API to which the Pi can post the sensor readings and a front-end which will render some cool graphics. Since I built the rest of the project in Python and it is my preferred programming language, I chose <a href="https://flask.palletsprojects.com/en/1.1.x/"> Flask </a> to build the web app. I hosted the app on <a href = "https://www.heroku.com/"> Heroku </a>, since it is so simple to use and has a free "hobby" tier and used <a href = "https://www.postgresql.org/"> PostgreSQL</a> for the database which will store the readings. This is the repo for the web app/API.
 
