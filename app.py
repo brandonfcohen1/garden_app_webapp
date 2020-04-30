@@ -47,7 +47,7 @@ def dashboard(n_readings = 72):
     plt.subplots_adjust(hspace = 0.4)
 
     fig.add_subplot(331)
-    plt.plot(read_df['datetime'], read_df['baro_temp'])
+    plt.plot(read_df['datetime'], read_df['baro_temp'].replace(0.0, np.NaN).interpolate())
     plt.title('Temperature (from baro sensor)')
     plt.ylabel('deg F')
 
@@ -62,7 +62,7 @@ def dashboard(n_readings = 72):
     plt.ylabel('deg F')
 
     fig.add_subplot(334)
-    plt.plot(read_df['datetime'], read_df['baro_pressure'])
+    plt.plot(read_df['datetime'], read_df['baro_pressure'].replace(0.0, np.NaN).interpolate())
     plt.title('Barometric Pressure')
     plt.ylabel('mmHg')
 
